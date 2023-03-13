@@ -1,13 +1,13 @@
 import Nav from "../components/Nav";
 import { useState } from "react";
-// import {useCookies} from 'react-cookie'
+import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
-// import axios from 'axios'
+import axios from 'axios'
 
 const OnBoarding = () => {
-  // const [cookies, setCookie, removeCookie] = useCookies(null)
+  const [cookies, setCookie, removeCookie] = useCookies(null);
   const [formData, setFormData] = useState({
-    user_id: "",
+    user_id: cookies.User_id,
     first_name: "",
     dob_day: "",
     dob_month: "",
@@ -20,9 +20,21 @@ const OnBoarding = () => {
     matches: [],
   });
 
-  // let navigate = useNavigate();
+  let navigate = useNavigate();
 
-  const handleSubmit = async (e) => {};
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.put("http://localhost:8000/user", {
+        formData,
+      });
+      if(response.status === 200) {
+        navigate('/dashboard')
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleChange = (e) => {
     console.log("e", e);
@@ -55,12 +67,9 @@ const OnBoarding = () => {
               value={formData.first_name}
               onChange={handleChange}
             />
-                          
-          
 
             <label>Birthday</label>
             <div className="multiple-input-container">
-              
               <input
                 id="dob_day"
                 type="number"
@@ -89,9 +98,6 @@ const OnBoarding = () => {
                 value={formData.dob_year}
                 onChange={handleChange}
               />
-               
-
-             
             </div>
 
             <label>Gender</label>

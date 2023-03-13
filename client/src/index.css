@@ -235,7 +235,7 @@ nav .logo-container .logo:hover {
 }
 
 .onboarding form input[type=number] {
-  width: 120px;
+  width: 80px;
 }
 
 .onboarding form input[type=radio]:checked + label {
