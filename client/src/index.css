@@ -24,6 +24,10 @@ h2 {
   border: none;
   cursor: pointer;
   transition: all 0.3s ease;
+  
+  
+
+
 }
 
 .primary-button:hover {
@@ -291,7 +295,7 @@ nav .logo-container .logo:hover {
 .dashboard .card-container {
   width: 400px;
   height: 650px;
-  background: #000;
+ 
 }
 
 .card {
@@ -300,7 +304,13 @@ nav .logo-container .logo:hover {
   border-radius: 30px;
   background-size: cover;
   background-position: center;
-  background: red;
+
+}
+.card img{
+  width: 100%;
+  height: 100%;
+  border-radius: 30px;
+  object-fit: cover;
 }
 
 .card h3 {
@@ -325,10 +335,11 @@ nav .logo-container .logo:hover {
 
 .chat-container .chat-container-header {
   background: linear-gradient(45deg, rgb(254, 48, 114), rgb(255, 89, 64));
-  height: 100px;
+  height: 80px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-direction: row;
 }
 
 .chat-container .option {
@@ -338,6 +349,7 @@ nav .logo-container .logo:hover {
   font-size: 20px;
   margin: 2px;
   padding: 10px;
+  cursor: pointer;
 }
 
 .chat-container .option:disabled {
@@ -350,6 +362,11 @@ nav .logo-container .logo:hover {
   align-items: center;
   padding: 20px;
   color: rgb(255, 255, 255);
+  cursor: pointer;
+}
+.log-out-icon{
+  cursor: pointer;
+  font-size: 20px;
 }
 
 .img-container {
@@ -368,8 +385,12 @@ nav .logo-container .logo:hover {
 .chat-display,
 .matches-display {
   padding: 20px;
-  height: 60vh;
+  height: 50vh;
   overflow-y: auto;
+
+}
+.match-card{
+  cursor: pointer;
 }
 
 /*-------- Chat Input --------*/
@@ -379,14 +400,60 @@ nav .logo-container .logo:hover {
   flex-direction: column;
 }
 
+.chat-input input {
+  padding: 15px 30px;
+  margin: 5px 0;
+  font-size: 15px;
+  height: 20px;
+  border: solid 2px rgb(116, 112, 112);
+  border-radius: 10px;
+}
+.chat-input button{
+  margin-top: 10px;
+  width:fit-content;
+  align-self: center;
+}
 
 
+.chat-wrapper{
+  display: flex;
+  flex-direction: row;
 
+}
 
+.chat-message-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.chat-message-header p{
+  margin: 0;
+  font-size: 12px;
+  color: rgb(179, 175, 175);
+  align-self: center;
+}
 
+.card h3{
+/* color that looks good when displayed on photo */
 
+  color: rgb(255, 255, 255);
+  font-size: 20px;
+  font-weight: 500;
+  margin: 0;
+  padding: 10px;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 0 0 30px 30px;
 
-
-
-
-
+}
+.no-users{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  font-size: 20px;
+  font-weight: 500;
+  color: rgb(179, 175, 175);
+}

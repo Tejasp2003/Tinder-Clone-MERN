@@ -34,6 +34,7 @@ const AuthModal = ({ setShowModal, isSignUp }) => {
       if (response.status === 201 && !isSignUp) {
         navigate("/dashboard");
       }
+      window.location.reload();
     } catch (error) {
       setError(error.message);
     }

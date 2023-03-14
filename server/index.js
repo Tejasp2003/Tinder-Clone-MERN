@@ -1,13 +1,13 @@
 const PORT = 8000;
 const express = require("express");
 const { MongoClient } = require("mongodb");
-const uri =
-  "mongodb+srv://Tejas2003:Tejas%402003@tinder.vozs70n.mongodb.net/?retryWrites=true&w=majority";
 const { v4: uuidv4 } = require("uuid");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cors = require("cors");
+require("dotenv").config();
 const app = express();
+const uri = process.env.URI;
 app.use(express.json());
 
 app.use(cors());
@@ -55,7 +55,7 @@ app.post("/login", async (req, res) => {
     await client.connect();
     const database = client.db("app-data");
     const users = await database.collection("users");
-    
+
     const user = await users.findOne({ email });
     const correctPassword = await bcrypt.compare(
       password,
@@ -76,8 +76,6 @@ app.post("/login", async (req, res) => {
   }
 });
 
-
-
 app.get("/user", async (req, res) => {
   const client = new MongoClient(uri);
   const user_id = req.query.user_id;
@@ -90,31 +88,24 @@ app.get("/user", async (req, res) => {
     const user = await users.findOne(query);
 
     res.send(user);
-
-  }
-  catch (err) {
+  } catch (err) {
     console.log(err);
-  }
-  finally {
+  } finally {
     await client.close();
   }
-
 });
 
-
-
-
-
-
-app.get("/users", async (req, res) => {
+app.get("/gendered-users", async (req, res) => {
   const client = new MongoClient(uri);
+  const gender = req.query.gender;
+
   try {
     await client.connect();
     const database = client.db("app-data");
-    const users = await database.collection("users").find().toArray();
-    res.json(users);
-  } catch (err) {
-    console.log(err);
+    const users = database.collection("users");
+    const query = { gender_identity: { $eq: gender } };
+    const foundUsers = await users.find(query).toArray();
+    res.json(foundUsers);
   } finally {
     await client.close();
   }
@@ -152,5 +143,99 @@ app.put("/user", async (req, res) => {
     await client.close();
   }
 });
+
+app.put("/addmatch", async (req, res) => {
+  const client = new MongoClient(uri);
+  const { user_id, matchedUserId } = req.body;
+
+  try {
+    await client.connect();
+    const database = client.db("app-data");
+    const users = database.collection("users");
+
+    const query = { user_id: user_id };
+    const updateDocument = {
+      $push: { matches: { user_id: matchedUserId } },
+    };
+    const user = await users.updateOne(query, updateDocument);
+    res.send(user);
+  } finally {
+    await client.close();
+  }
+});
+
+app.get("/users", async (req, res) => {
+  const client = new MongoClient(uri);
+  const user_ids = JSON.parse(req.query.user_ids);
+
+  try {
+    await client.connect();
+    const database = client.db("app-data");
+    const users = database.collection("users");
+
+    const pipeline = [
+      {
+        $match: {
+          user_id: {
+            $in: user_ids,
+          },
+        },
+      },
+    ];
+
+    const foundUsers = await users.aggregate(pipeline).toArray();
+
+    res.json(foundUsers);
+  } finally {
+    await client.close();
+  }
+});
+
+app.get("/messages", async (req, res) => {
+  const client = new MongoClient(uri);
+  const { user_id, correspondingUserId } = req.query;
+  try {
+    await client.connect();
+    const database = client.db("app-data");
+    const messages = database.collection("messages");
+    const query = {
+      from_userId: user_id,
+      to_userId: correspondingUserId,
+    };
+    const foundMessages = await messages.find(query).toArray();
+    res.send(foundMessages);
+  } catch (err) {
+    console.log(err);
+  } finally {
+    await client.close();
+  }
+});
+
+
+
+
+
+
+
+
+
+
+app.post('/message', async (req, res) => {
+  const client = new MongoClient(uri)
+  const message = req.body.message
+
+  try {
+      await client.connect()
+      const database = client.db('app-data')
+      const messages = database.collection('messages')
+
+      const insertedMessage = await messages.insertOne(message)
+      res.send(insertedMessage)
+  } finally {
+      await client.close()
+  }
+})
+
+
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
