@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:backend": "nodemon index.js",
-    "build": "vite build"
+    "build": "node index.js"
+    
   },
   "keywords": [],
   "author": "",
@@ -20,8 +21,6 @@
     "mongodb": "^5.1.0",
     "nodemon": "^2.0.21",
     "uuid": "^9.0.0"
-  },
-  "devDependencies": {
-    "vite": "^4.1.4"
   }
+
 }
