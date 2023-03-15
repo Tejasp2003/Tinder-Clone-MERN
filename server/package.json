@@ -6,8 +6,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:backend": "nodemon index.js"
-    
-    
   },
   "keywords": [],
   "author": "",
@@ -22,5 +20,4 @@
     "nodemon": "^2.0.21",
     "uuid": "^9.0.0"
   }
-
 }
